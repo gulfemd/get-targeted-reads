@@ -1,10 +1,42 @@
-# get-targeted-reads
+# Targeted Read Finder
 
-It should be run for each str region.
+It should be run for each STR region.
 
-on Linux:
-gcc -std=c99 main.c mate.c read.c pair.c util.c -Ihtslib -Lhtslib htslib/libhts.a -lz -lpthread `pkg-config --cflags --libs glib-2.0` -o targeted-read-finder
+# Download
 
-on Mac:
-gcc main.c mate.c read.c pair.c util.c -Wl,-stack_size -Wl,8000000 -Ihtslib -Lhtslib htslib/libhts.a -lz -lpthread `pkg-config --cflags --libs glib-2.0` -o targeted-read-finder
+Clone the project with htslib.
 
+```
+git clone --recursive git@github.com:gulfemd/get-targeted-reads
+```
+
+Make sure that you have [glib@2.46.2](https://developer.gnome.org/glib/) installed.
+
+
+# Build
+
+`Makefile` is available for multiple targets. To build local dependencies:
+
+```
+make libs
+```
+
+To build the tool:
+
+```
+make trf
+```
+
+Note: If you are getting `Segmentation fault` when running the tool, that means you have to increase the stack size before compiling.
+
+```
+ulimit -s unlimited
+```
+
+# Run
+
+```
+./targeted-read-finder --str <STR_FILE_PATH> --bam <BAM_FILE_PATH> --out <OUTPUT_DIR> --insert-size 400 --include-mates
+```
+
+`insert-size` and `include-mates` parameters are optional and default to `0` and `false`, respectively.
